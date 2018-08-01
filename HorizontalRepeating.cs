@@ -11,9 +11,39 @@ namespace SharpLightReporting
     {
         private void StartHorizRepeat(Bounds horizRepeatBounds, int repeatFrequency, RepeatMode repeatMode)
         {
+            int colsPerRepeat = horizRepeatBounds.Right - horizRepeatBounds.Left + 1;
+            int repeatFrequencyNumber = repeatFrequency;
+            if (repeatFrequencyNumber == 0)
+            {
+                if (repeatMode == RepeatMode.insert)
+                {
+                    for (int i = horizRepeatBounds.Left; i <= horizRepeatBounds.Right; i++)
+                    {
+                        // If insert mode then remove the cols from the template
+                        ColsToRemove.Add(i);
+                        for (int j = horizRepeatBounds.Top; j <= horizRepeatBounds.Bottom; j++)
+                        {
+                            Document.SetCellValue(i, j, "");
+                            Document.RemoveCellStyle(i, j);
+                        }
+                    }
+                }
+                if (repeatMode == RepeatMode.shift || repeatMode == RepeatMode.overwrite)
+                {
+                    //if the cells were to be just shifted or overwritten then just set the repeated zone to blank
+                    for (int i = horizRepeatBounds.Left; i <= horizRepeatBounds.Right; i++)
+                    {
+                        for (int j = horizRepeatBounds.Top; j <= horizRepeatBounds.Bottom; j++)
+                        {
+                            Document.SetCellValue(i, j, "");
+                            Document.RemoveCellStyle(i, j);
+                        }
+                    }
+                }
+                return;
+            }
             //Also if repeated cols have subRepeaters than add cols inserted to left and right of such repeated defs.
             // All repeaters beneath the repeated zone must also have their left and right colFromWhere increased by the number of cols being inserted.
-            int colsPerRepeat = horizRepeatBounds.Right - horizRepeatBounds.Left + 1;
             int repeatedTimes = 1;
             int colIndexWhereInserted = 0;
 
@@ -28,7 +58,7 @@ namespace SharpLightReporting
 
             try
             {
-                while (repeatedTimes < repeatFrequency)
+                while (repeatedTimes < repeatFrequencyNumber)
                 {
                     int RowBeingCopiedPos = horizRepeatBounds.Top;
                     int colBeingCopiedPos = horizRepeatBounds.Left;
@@ -149,9 +179,9 @@ namespace SharpLightReporting
                 {
                     int startIndex = cellText.IndexOf("<vertrepeat");
                     int endIndex = cellText.IndexOf("/>", startIndex);
-                    int frequency = 0;
-                    RepeatMode repeatMode = RepeatMode.insert;
-                    Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText, out frequency, out repeatMode);
+                    string frequency = GetVertRepeatFrequency(cellText);
+                    RepeatMode repeatMode = GetVertRepeatMode(cellText);
+                    Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText/*, out frequency, out repeatMode*/);
                     vertRepeatbounds.Left = vertRepeatbounds.Left + increaseByValue;
                     vertRepeatbounds.Right = vertRepeatbounds.Right + increaseByValue;
 
@@ -179,9 +209,9 @@ namespace SharpLightReporting
                 {
                     int startIndex = cellText.IndexOf("<horizrepeat");
                     int endIndex = cellText.IndexOf("/>", startIndex);
-                    int frequency = 0;
-                    RepeatMode repeatMode = RepeatMode.shift;
-                    Bounds horizRepeaterBounds = GetVertRepeaterBounds(cellText, out frequency, out repeatMode);
+                    string frequency = GetHorizRepeatFrequency(cellText);
+                    RepeatMode repeatMode = GetHorizRepeatMode(cellText);
+                    Bounds horizRepeaterBounds = GetHorizRepeaterBounds(cellText/*, out frequency, out repeatMode*/);
                     horizRepeaterBounds.Left = horizRepeaterBounds.Left + increaseByValue;
                     horizRepeaterBounds.Right = horizRepeaterBounds.Right + increaseByValue;
                     cellText = cellText.Remove(startIndex, endIndex - startIndex).Insert(startIndex,
@@ -225,9 +255,9 @@ namespace SharpLightReporting
                         {
                             int startIndex = cellText.IndexOf("<vertrepeat");
                             int endIndex = cellText.IndexOf("/>", startIndex);
-                            int frequency = 0;
-                            RepeatMode repeatMode = RepeatMode.insert;
-                            Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText, out frequency, out repeatMode);
+                            string frequency = GetVertRepeatFrequency(cellText);
+                            RepeatMode repeatMode = GetVertRepeatMode(cellText);
+                            Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText/*, out frequency, out repeatMode*/);
 
                             if ((vertRepeatbounds.Top >= topLimit && vertRepeatbounds.Top <= bottomLimit) ||
                                 (vertRepeatbounds.Bottom >= topLimit && vertRepeatbounds.Bottom <= bottomLimit))
@@ -273,10 +303,10 @@ namespace SharpLightReporting
                         {
                             int startIndex = cellText.IndexOf("<horizrepeat");
                             int endIndex = cellText.IndexOf("/>", startIndex);
-                            int frequency = 0;
-                            RepeatMode repeatMode = RepeatMode.shift;
-                            Bounds horizRepeaterBounds = GetHorizRepeaterBounds(cellText, out frequency,
-                                                                                out repeatMode);
+                            string frequency = GetHorizRepeatFrequency(cellText);
+                            RepeatMode repeatMode = GetHorizRepeatMode(cellText);
+                            Bounds horizRepeaterBounds = GetHorizRepeaterBounds(cellText/*, out frequency,
+                                                                                out repeatMode*/);
                             if ((horizRepeaterBounds.Top >= topLimit && horizRepeaterBounds.Top <= bottomLimit) ||
                                 (horizRepeaterBounds.Bottom >= topLimit && horizRepeaterBounds.Bottom <= bottomLimit))
                             {
@@ -339,9 +369,9 @@ namespace SharpLightReporting
                         {
                             int startIndex = cellText.IndexOf("<vertrepeat");
                             int endIndex = cellText.IndexOf("/>", startIndex);
-                            int frequency = 0;
-                            RepeatMode repeatMode = RepeatMode.insert;
-                            Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText, out frequency, out repeatMode);
+                            string frequency = GetVertRepeatFrequency(cellText);
+                            RepeatMode repeatMode = GetVertRepeatMode(cellText);
+                            Bounds vertRepeatbounds = GetVertRepeaterBounds(cellText/*, out frequency, out repeatMode*/);
 
                             if ((vertRepeatbounds.Top >= topLimit && vertRepeatbounds.Top <= bottomLimit) ||
                                 (vertRepeatbounds.Bottom >= topLimit && vertRepeatbounds.Bottom <= bottomLimit))
@@ -387,10 +417,10 @@ namespace SharpLightReporting
                         {
                             int startIndex = cellText.IndexOf("<horizrepeat");
                             int endIndex = cellText.IndexOf("/>", startIndex);
-                            int frequency = 0;
-                            RepeatMode repeatMode = RepeatMode.shift;
-                            Bounds horizRepeaterBounds = GetHorizRepeaterBounds(cellText, out frequency,
-                                                                                out repeatMode);
+                            string frequency = GetHorizRepeatFrequency(cellText);
+                            RepeatMode repeatMode = GetHorizRepeatMode(cellText);
+                            Bounds horizRepeaterBounds = GetHorizRepeaterBounds(cellText/*, out frequency,
+                                                                                out repeatMode*/);
                             if ((horizRepeaterBounds.Top >= topLimit && horizRepeaterBounds.Top <= bottomLimit) ||
                                 (horizRepeaterBounds.Bottom >= topLimit && horizRepeaterBounds.Bottom <= bottomLimit))
                             {
@@ -436,13 +466,13 @@ namespace SharpLightReporting
             }
         }
 
-        private Bounds GetHorizRepeaterBounds(string cellText, out int repeatFrequency, out RepeatMode repeatMode)
+        private Bounds GetHorizRepeaterBounds(string cellText/*, out int repeatFrequency, out RepeatMode repeatMode*/)
         {
             string fullCellText = cellText;
             var bounds = new Bounds();
             string originalText = cellText;
-            repeatFrequency = 1;
-            string repMode = "shift";
+            //repeatFrequency = 0;
+            //string repMode = "shift";
             if (HasHorizRepeaterDefined(cellText))
             {
                 int horizRepeatDefStart = cellText.ToLower().IndexOf("<horizrepeat");
@@ -468,19 +498,71 @@ namespace SharpLightReporting
                     {
                         bounds.Right = int.Parse(valuePair.Replace("right=", ""));
                     }
+                    //if (valuePair.StartsWith("frequency="))
+                    //{
+                    //    repeatFrequency = int.Parse(valuePair.Replace("frequency=", ""));
+                    //}
+                    //if (valuePair.StartsWith("mode="))
+                    //{
+                    //    repMode = valuePair.Replace("mode=", "").ToLower().Trim();
+                    //}
+                }
+            }
+            //repeatMode = (RepeatMode)Enum.Parse(typeof(RepeatMode), repMode);
+
+            return bounds;
+        }
+
+        private string GetHorizRepeatFrequency(string cellText)
+        {
+            string fullCellText = cellText;
+            var bounds = new Bounds();
+            string originalText = cellText;
+            string repeatFrequency = 0.ToString();
+            string repMode = "shift";
+            if (HasHorizRepeaterDefined(cellText))
+            {
+                int horizRepeatDefStart = cellText.ToLower().IndexOf("<horizrepeat");
+                int horizRepeatDefEnds = cellText.ToLower().IndexOf("/>", horizRepeatDefStart) + 2;
+                string inSideText = cellText.Substring(horizRepeatDefStart + 12,
+                                                       horizRepeatDefEnds - 2 - (horizRepeatDefStart + 12));
+                string[] valuePairs = inSideText.Replace(" ", "").Split(new char[] { ',' }, inSideText.Length);
+                foreach (string valuePair in valuePairs)
+                {
                     if (valuePair.StartsWith("frequency="))
                     {
-                        repeatFrequency = int.Parse(valuePair.Replace("frequency=", ""));
+                        repeatFrequency = valuePair.Replace("frequency=", "");
                     }
+                }
+            }
+
+            return repeatFrequency;
+        }
+
+        private RepeatMode GetHorizRepeatMode(string cellText)
+        {
+            string fullCellText = cellText;
+            var bounds = new Bounds();
+            string originalText = cellText;
+
+            string repMode = "shift";
+            if (HasHorizRepeaterDefined(cellText))
+            {
+                int horizRepeatDefStart = cellText.ToLower().IndexOf("<horizrepeat");
+                int horizRepeatDefEnds = cellText.ToLower().IndexOf("/>", horizRepeatDefStart) + 2;
+                string inSideText = cellText.Substring(horizRepeatDefStart + 12,
+                                                       horizRepeatDefEnds - 2 - (horizRepeatDefStart + 12));
+                string[] valuePairs = inSideText.Replace(" ", "").Split(new char[] { ',' }, inSideText.Length);
+                foreach (string valuePair in valuePairs)
+                {
                     if (valuePair.StartsWith("mode="))
                     {
                         repMode = valuePair.Replace("mode=", "").ToLower().Trim();
                     }
                 }
             }
-            repeatMode = (RepeatMode)Enum.Parse(typeof(RepeatMode), repMode);
-
-            return bounds;
+            var repeatMode = (RepeatMode)Enum.Parse(typeof(RepeatMode), repMode);
+            return repeatMode;
         }
 
         private bool HasRepeaterDefinition(string cellText)

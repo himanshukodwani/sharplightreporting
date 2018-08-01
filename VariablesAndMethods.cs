@@ -15,7 +15,6 @@ namespace SharpLightReporting
             int methodDefEndIndex = modifiedtext.IndexOf("/>", methodDefStartIndex) + 2;
             modifiedtext = cellText.Remove(methodDefStartIndex, methodDefEndIndex - methodDefStartIndex);
             return modifiedtext;
-
         }
 
         private bool HasMethodDefinition(string cellText)
@@ -55,12 +54,11 @@ namespace SharpLightReporting
                 throw new Exception("No method name found");
             }
         }
-        
+
         private void SetCellValuesAsPerFormatDefined(int CurrRow, int CurrColumn, string val)
         {
             if (HasCellFormatDefined(val))
             {
-
                 int FormatDefinitionStartsAt = val.ToLower().IndexOf("<cellformat");
                 int FormatDefinitionEndsAt = val.ToLower().IndexOf("/>", FormatDefinitionStartsAt);
                 string FormatDefinition = val.ToLower().Substring(FormatDefinitionStartsAt,
@@ -68,7 +66,7 @@ namespace SharpLightReporting
                 val = val.Remove(FormatDefinitionStartsAt, FormatDefinitionEndsAt + 2 - FormatDefinitionStartsAt);
                 string valFormat =
                     FormatDefinition.Replace("<", "").Replace("cellformat", "").Replace("=", "").Replace(" ", "").
-                        Replace("/>", "");
+                        Replace("/>", "").Replace(" ", "").ToLower();
                 switch (valFormat)
                 {
                     case "number":
@@ -88,9 +86,38 @@ namespace SharpLightReporting
                         }
                     case "datetime":
                         {
-                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val));
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToString());
                             break;
-
+                        }
+                    case "date":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToShortDateString());
+                            break;
+                        }
+                    case "time":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToShortTimeString());
+                            break;
+                        }
+                    case "shortdate":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToShortDateString());
+                            break;
+                        }
+                    case "shorttime":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToShortTimeString());
+                            break;
+                        }
+                    case "longdate":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToLongDateString());
+                            break;
+                        }
+                    case "longtime":
+                        {
+                            Document.SetCellValue(CurrRow, CurrColumn, DateTime.Parse(val).ToLongTimeString());
+                            break;
                         }
                     case "bool":
                         {
@@ -100,18 +127,14 @@ namespace SharpLightReporting
                         }
                     default:
                         {
-
                             Document.SetCellValue(CurrRow, CurrColumn, val);
                             break;
                         }
-
                 }
-
             }
             else
             {
                 Document.SetCellValue(CurrRow, CurrColumn, val);
-                
             }
         }
 
@@ -129,26 +152,21 @@ namespace SharpLightReporting
             if (cellText.ToLower().Replace(" ", "").Contains("<variable"))
             {
                 return true;
-
             }
             return false;
         }
-        
+
         private string ReplaceVriablesWithValue(string cellText)
         {
             if (HasVariable(cellText))
             {
                 while (HasVariable(cellText))
                 {
-
-
                     cellText = ProcessVariableFound(cellText);
                 }
-
             }
 
             return cellText;
-
         }
 
         private string ProcessVariableFound(string cellText)
@@ -174,30 +192,21 @@ namespace SharpLightReporting
             {
                 try
                 {
-
-                
                     cellText = cellText.Remove(variableStartIndex, variableEndIndex - variableStartIndex);
                     cellText = cellText.Insert(variableStartIndex, GetVariableValue(propName).ToString());
-                
                 }
                 catch
                 {
-
                     NotifyReportLogEvent("Coul not process variable having property name : " + propName);
                 }
-           }
+            }
             return cellText;
         }
 
         private object GetVariableValue(string variableName)
         {
-                 
-               
-            
-                object retval = _reportModelData.GetType().GetProperty(variableName).GetGetMethod().Invoke(_reportModelData, null);
-                return retval;
-            
-
+            object retval = _reportModelData.GetType().GetProperty(variableName).GetGetMethod().Invoke(_reportModelData, null);
+            return retval;
         }
 
         private void CallMethod(string MethodName)
@@ -208,12 +217,8 @@ namespace SharpLightReporting
             }
             catch
             {
-
                 NotifyReportLogEvent("Could not call method :" + MethodName);
             }
-
-
-
         }
-    }    
+    }
 }

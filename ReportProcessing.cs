@@ -8,7 +8,7 @@ using SpreadsheetLight.Drawing;
 
 namespace SharpLightReporting
 {
-    public partial class ReportEngine 
+    public partial class ReportEngine
     {
         private Bounds CurrentReportBounds = null;
         private IReportModel _reportModelData;
@@ -26,38 +26,36 @@ namespace SharpLightReporting
         private List<ColsInsertedItem> ColsInseted = new List<ColsInsertedItem>();
         private List<ColsShiftedItem> ColsShifted = new List<ColsShiftedItem>();
         private string DestinationFile = "Temp.xlsx";
+
         public delegate void ChartCreatedDelegate(ReportChartItem reportChartItem);
+
         public event ChartCreatedDelegate ChartCreatedEvent;
-        public delegate void CustomTagDelegate(SLDocument workSheet, int calledFromRow, int calledFromCol, string tagName, List<StringKeyValue> tagParams); 
+
+        public delegate void CustomTagDelegate(SLDocument workSheet, int calledFromRow, int calledFromCol, string tagName, List<StringKeyValue> tagParams);
+
         public event CustomTagDelegate CustomTagFound;
 
         public delegate void NotifyReportLogDelegate(string log);
 
         public event NotifyReportLogDelegate NotifyReportLogEvent;
-        
+
         public void ProcessReport(string TemplateFile, string destinationFile, IReportModel Data)
         {
-
-           
             Document = new SLDocument(TemplateFile);
             DestinationFile = destinationFile;
             SubProcess(Data);
             Document.SaveAs(DestinationFile);
-
-
         }
-       
+
         public void ProcessReport(string TemplateFile, Stream OutputStream, IReportModel Data)
         {
-            
             Document = new SLDocument(TemplateFile);
             SubProcess(Data);
             Document.SaveAs(OutputStream);
         }
-        
+
         public void ProcessReport(Stream TemplateFileStream, Stream OutputStream, IReportModel Data)
         {
-
             Document = new SLDocument(TemplateFileStream);
             SubProcess(Data);
             Document.SaveAs(OutputStream);
@@ -70,12 +68,11 @@ namespace SharpLightReporting
             SubProcess(Data);
             Document.SaveAs(DestinationFile);
         }
-        
+
         private void SubProcess(IReportModel Data)
         {
-
             _reportModelData = Data;
-             //1) Go through each sheet
+            //1) Go through each sheet
             foreach (var sheetName in Document.GetSheetNames())
             {
                 CurrentSheet = sheetName;
@@ -98,12 +95,11 @@ namespace SharpLightReporting
                     CurrentReportBounds = null;
                     CurrentReportBounds = GetReportTemplateBounds();
                     AddRowsToRemove(1);
-                   
+
                     EnumerateReport();
 
                     //4) Now call EnumerateReport and Go through each cell in template
                     //5) Get cell data replace dynamic data with values from ReportData class
-
 
                     //foreach (var item in this.RowsInserted)
                     //{
@@ -115,32 +111,30 @@ namespace SharpLightReporting
                     RowsToRemove.Sort();
 
                     foreach (int row in RowsToRemove)
-                    {   
+                    {
                         //////////////////////////////////////////////////////////////////////  - Removing row and setting height
-                        List<PairedValues<int, double> > rowsandHeights = new List<PairedValues<int, double>>();
-                        
-                        //Get all next rows height, delete the row which needs to be deleted, set replacing row height to it's actual height
+                        List<PairedValues<int, double>> rowsandHeights = new List<PairedValues<int, double>>();
 
+                        //Get all next rows height, delete the row which needs to be deleted, set replacing row height to it's actual height
 
                         for (int i = row; i <= CurrentReportBounds.Bottom; i++)
                         {
                             //get next row height and set it at what index it will be after row is removed
-                            double nextrowheight = Document.GetRowHeight(i - rowsRemoveCount + 1); 
-                            //Note we are not adding +1 to row index as row index after removal of previous row will be one less then it's current index 
+                            double nextrowheight = Document.GetRowHeight(i - rowsRemoveCount + 1);
+                            //Note we are not adding +1 to row index as row index after removal of previous row will be one less then it's current index
                             rowsandHeights.Add(new PairedValues<int, double>(i - rowsRemoveCount, nextrowheight));
                         }
-                        
+
                         //Delete One Row
                         Document.DeleteRow(row - rowsRemoveCount, 1);
 
-                        //Now all next rows have got their index one less then their previous index so it will now match the indexes as saved in list of rowsandheight 
+                        //Now all next rows have got their index one less then their previous index so it will now match the indexes as saved in list of rowsandheight
                         foreach (var rowsandHeight in rowsandHeights)
                         {
-                            Document.SetRowHeight(rowsandHeight.ValueA, rowsandHeight.ValueB); 
+                            Document.SetRowHeight(rowsandHeight.ValueA, rowsandHeight.ValueB);
                         }
                         /////////////////////////////////////////////////////////////////////////
-                        
-                        
+
                         this.CurrentReportBounds.Bottom -= 1;
                         AdjustPicturePositionOnRowRemoved(row - rowsRemoveCount, 1);
                         AdjustChartPositionOnRowRemoved(row - rowsRemoveCount, 1);
@@ -160,7 +154,7 @@ namespace SharpLightReporting
                     foreach (int col in ColsToRemove)
                     {
                         //////////////////////////////////////////////////////////////////////////////////
-                        
+
                         List<PairedValues<int, double>> colsandWidths = new List<PairedValues<int, double>>();
                         //Get next cols width, remove the col that needs to be removed, set replacing columns width
                         for (int i = col; i <= CurrentReportBounds.Right; i++)
@@ -168,8 +162,7 @@ namespace SharpLightReporting
                             double nextcolwidth = Document.GetColumnWidth(i - colsRemoveCount + 1);
                             colsandWidths.Add(new PairedValues<int, double>(i - colsRemoveCount, nextcolwidth));
                         }
-                        
-                        
+
                         ///Remove one column
                         Document.DeleteColumn(col - colsRemoveCount, 1);
                         ///Each column next to the one removed should have their width reset to their previous width
@@ -178,7 +171,7 @@ namespace SharpLightReporting
                             Document.SetColumnWidth(colsandWidth.ValueA, colsandWidth.ValueB);
                         }
                         ////////////////////////////////////////////////////////////////////////////////////
-                        
+
                         this.CurrentReportBounds.Right -= 1;
                         AdjustPicturePositionOnColumnRemoved(col - colsRemoveCount, 1);
                         AdjustChartPositionOnColumnRemoved(col - colsRemoveCount, 1);
@@ -186,7 +179,6 @@ namespace SharpLightReporting
                         AdjustColInsertedListOnColRemoval(col - colsRemoveCount, 1);
                         colsRemoveCount++;
                     }
-
 
                     PutAllPicturesOnReport();
                     PutAllChartsOnReport();
@@ -228,7 +220,7 @@ namespace SharpLightReporting
                 this.ColsToRemove.Add(colNumber);
             }
         }
-        
+
         public Bounds GetReportBounds()
         {
             return CurrentReportBounds;
@@ -242,8 +234,6 @@ namespace SharpLightReporting
             {
                 while (MoveNextColumn())
                 {
-
-
                     string originalText = Document.GetCellValueAsString(CurrentRow, CurrentColumn);
                     //Process variable and methods *********
                     //While a cell is having both variables and methods process them in sequence they are defined
@@ -273,7 +263,6 @@ namespace SharpLightReporting
                     {
                         CallMethod(GetMethodName(originalText));
                         originalText = RemoveMethodDef(originalText);
-
                     }
 
                     //If not a picture cell
@@ -285,7 +274,7 @@ namespace SharpLightReporting
                         val = CallCustomTags(val);
                     }
                     SetCellValuesAsPerFormatDefined(CurrentRow, CurrentColumn, val);
-                    
+
                     //********* Completed processing variables and methods
 
                     //Start processing repeaters
@@ -294,18 +283,21 @@ namespace SharpLightReporting
                         RepeatMode repeatMode = RepeatMode.insert;
                         AddRowsToRemove(CurrentRow);
                         int count = 0;
-                        StartVertRepeat(GetVertRepeaterBounds(val, out count, out repeatMode), count, repeatMode);
-
+                        Bounds vertRepeatBounds = GetVertRepeaterBounds(val);
+                        count = int.Parse(GetVertRepeatFrequency(val));
+                        repeatMode = GetVertRepeatMode(val);
+                        StartVertRepeat(vertRepeatBounds, count, repeatMode);
                     }
 
                     if (HasHorizRepeaterDefined(val))
                     {
-                        RepeatMode repeatMode = RepeatMode.shift;
+                        RepeatMode repeatMode = GetHorizRepeatMode(val);
                         AddRowsToRemove(CurrentRow);
-                       // AddColsToRemove(CurrentColumn);
+                        // AddColsToRemove(CurrentColumn);
                         int count = 0;
-                        StartHorizRepeat(GetHorizRepeaterBounds(val, out count, out repeatMode), count, repeatMode);
-
+                        count = int.Parse(GetHorizRepeatFrequency(val));
+                        Bounds horizRepeatBounds = GetHorizRepeaterBounds(val/*, out count, out repeatMode*/);
+                        StartHorizRepeat(horizRepeatBounds, count, repeatMode);
                     }
                     while (HasChartDefinition(val))
                     {
@@ -314,7 +306,6 @@ namespace SharpLightReporting
                         int chartDefEnd = val.ToLower().IndexOf(@"/>", chartDefStart) + 2;
                         val = val.Remove(chartDefStart, chartDefEnd - chartDefStart);
                         Document.SetCellValue(CurrentRow, CurrentColumn, val);
-                        
                     }
                     while (HasPictureDefinition(val))
                     {
@@ -323,7 +314,6 @@ namespace SharpLightReporting
                         int picDefEnd = val.ToLower().IndexOf(@"/>", picDefStart) + 2;
                         val = val.Remove(picDefStart, picDefEnd - picDefStart);
                         Document.SetCellValue(CurrentRow, CurrentColumn, val);
-                        
                     }
                     //Remove Marked Rows - ?
                     if (IsRowDeleted(val))
@@ -337,21 +327,14 @@ namespace SharpLightReporting
                     }
                     if (HasPageBreak(val))
                     {
-                       // this.AddRowsToRemove(CurrentRow);
-                       // this.AddColsToRemove(CurrentColumn);
+                        // this.AddRowsToRemove(CurrentRow);
+                        // this.AddColsToRemove(CurrentColumn);
                         this.PageBreaks.Add(new PageBreakItems(CurrentRow, CurrentColumn));
                         val = RemovePageBreakDef(val);
                         Document.SetCellValue(CurrentRow, CurrentColumn, val);
-                            
-                       
-
                     }
-
-
-                   
                 }
             }
-
         }
 
         private bool HasReportDefinition()
@@ -363,7 +346,6 @@ namespace SharpLightReporting
 
                 if (firstCellvalue.StartsWith(@"<report") && firstCellvalue.EndsWith(@"/>"))
                 {
-
                     firstCellvalue = firstCellvalue.Remove(0, 7);
                     firstCellvalue = firstCellvalue.Remove(firstCellvalue.Length - 2, 2);
                     firstCellvalue.Replace(" ", "");
@@ -371,7 +353,6 @@ namespace SharpLightReporting
                     bool leftFound = false, rightFound = false, topFound = false, bottomFound = false;
                     foreach (var bound in bounds)
                     {
-
                         if (bound.ToLower().Trim().StartsWith("left"))
                         {
                             try
@@ -381,10 +362,7 @@ namespace SharpLightReporting
                             }
                             catch
                             {
-
-
                             }
-
 
                             continue;
                         }
@@ -397,9 +375,8 @@ namespace SharpLightReporting
                             }
                             catch
                             {
-
-
-                            } continue;
+                            }
+                            continue;
                         }
                         if (bound.ToLower().Trim().StartsWith("top"))
                         {
@@ -410,9 +387,8 @@ namespace SharpLightReporting
                             }
                             catch
                             {
-
-
-                            } continue;
+                            }
+                            continue;
                         }
                         if (bound.ToLower().Trim().StartsWith("bottom"))
                         {
@@ -423,8 +399,6 @@ namespace SharpLightReporting
                             }
                             catch
                             {
-
-
                             }
                         }
                     }
@@ -439,13 +413,9 @@ namespace SharpLightReporting
                 }
 
                 return false;
-
-
             }
 
             throw new Exception("Sheet not found");
-
-
         }
 
         private Bounds GetReportTemplateBounds()
@@ -466,7 +436,6 @@ namespace SharpLightReporting
                         bool leftFound = false, rightFound = false, topFound = false, bottomFound = false;
                         foreach (var bound in bounds)
                         {
-
                             if (bound.ToLower().Trim().StartsWith("left"))
                             {
                                 repbounds.Left =
@@ -490,12 +459,8 @@ namespace SharpLightReporting
                             {
                                 repbounds.Bottom =
                                     int.Parse(bound.ToLower().Trim().Replace("bottom=", ""));
-
-
                             }
                         }
-
-
                     }
                 }
             }
@@ -514,7 +479,8 @@ namespace SharpLightReporting
             this.ValueA = valA;
             this.ValueB = valB;
         }
+
         public TA ValueA { get; set; }
         public TB ValueB { get; set; }
     }
-}                                               
+}
