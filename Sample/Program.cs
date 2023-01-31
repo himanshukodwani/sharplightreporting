@@ -6,4 +6,18 @@ Console.WriteLine("Hello, World!");
 SharpLightReporting.ReportEngine reportEngine = new SharpLightReporting.ReportEngine();
 reportEngine.NotifyReportLogEvent += (x => Console.WriteLine(x));
 reportEngine.ProcessReport("SalesReportTemplate.xlsx", "SalesReport.xlsx", new SalesReportModel());
-Process.Start("SalesReport.xlsx");
+try
+{
+    //Launch the generated report output file
+    using Process fileopener = new Process();
+
+    fileopener.StartInfo.FileName = "explorer";
+    fileopener.StartInfo.Arguments = "SalesReport.xlsx";
+    fileopener.Start();
+
+
+}
+catch { }
+Console.WriteLine("Done!!");
+Console.Read();
+

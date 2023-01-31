@@ -240,7 +240,7 @@
     "C:\\Program Files (x86)\\Syncfusion\\Essential Studio\\WPF\\20.2.0.36\\ToolboxNuGetPackages": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.80",
     "restore": {
       "projectUniqueName": "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj",
       "projectName": "SharpLightReporting",

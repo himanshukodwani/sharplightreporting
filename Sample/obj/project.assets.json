@@ -95,7 +95,7 @@
           }
         }
       },
-      "SharpLightReporting/1.0.0": {
+      "SharpLightReporting/1.0.80": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -241,7 +241,7 @@
         "version.txt"
       ]
     },
-    "SharpLightReporting/1.0.0": {
+    "SharpLightReporting/1.0.80": {
       "type": "project",
       "path": "../SharpLightReporting/SharpLightReporting.csproj",
       "msbuildProject": "../SharpLightReporting/SharpLightReporting.csproj"
@@ -249,7 +249,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "SharpLightReporting >= 1.0.0"
+      "SharpLightReporting >= 1.0.80"
     ]
   },
   "packageFolders": {

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SharpLightReporting</id>
+    <version>1.0.0</version>
+    <title>SharpLightReporting.CrossPlatform</title>
+    <authors>SharpLightReporting</authors>
+    <icon>SharpLightReporting.png</icon>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/himanshukodwani/sharplightreporting</projectUrl>
+    <description>SharpLightReporting is a .Net reporting system where developers design a report using excel like software and insert supported template markers for dynamic content and method calls.
+This dynamic content is defined in a custom backing class (ReportData class) where custom properties behave as the source for this dynamic content and custom methods could be used to change the data like NextRecord() etc. resulting in a very easy, simple and flexible reporting system.</description>
+    <releaseNotes>This release uses SpreadsheetLight.Cross.Platform for excel automation</releaseNotes>
+    <copyright>MIT</copyright>
+    <tags>Reporting, Spreadsheed Reporting, Template Markers,</tags>
+    <repository type="git" url="https://github.com/himanshukodwani/sharplightreporting" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="SpreadsheetLight.Cross.Platform" version="3.5.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\bin\Release\net6.0\SharpLightReporting.dll" target="lib\net6.0\SharpLightReporting.dll" />
+    <file src="C:\Projects\SharpLightReporting\sharplightreporting\SharpLightReporting\SharpLightReporting.png" target="\SharpLightReporting.png" />
+    <file src="C:\Projects\SharpLightReporting.CrossPlatform\README.md" target="\README.md" />
+  </files>
+</package>

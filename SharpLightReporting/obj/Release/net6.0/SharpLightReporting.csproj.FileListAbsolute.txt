@@ -1,0 +1,12 @@
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\bin\Release\net6.0\SharpLightReporting.deps.json
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\bin\Release\net6.0\SharpLightReporting.dll
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\bin\Release\net6.0\SharpLightReporting.pdb
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.csproj.AssemblyReference.cache
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.AssemblyInfoInputs.cache
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.AssemblyInfo.cs
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.csproj.CoreCompileInputs.cache
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.dll
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\refint\SharpLightReporting.dll
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\SharpLightReporting.pdb
+C:\Projects\SharpLightReporting.CrossPlatform\SharpLightReporting\obj\Release\net6.0\ref\SharpLightReporting.dll
