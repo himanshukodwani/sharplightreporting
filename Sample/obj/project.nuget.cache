@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "mKW6rHUyQxIex54sJmQhtgKNGrsEe1Y4MBLIuol2INfV2wxYyrSmC8/f+6fsLax4kEhB93Vag/iSXAlfhdNwMg==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\SharpLightReporting.CrossPlatform\\Sample\\Sample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\documentformat.openxml\\2.18.0\\documentformat.openxml.2.18.0.nupkg.sha512",
+    "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\spreadsheetlight.cross.platform\\3.5.1\\spreadsheetlight.cross.platform.3.5.1.nupkg.sha512",
+    "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
+    "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}
