@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyVersion>1.0.80</AssemblyVersion>
     <FileVersion>1.0.80</FileVersion>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Title>SharpLightReporting.CrossPlatform</Title>
     <Description>SharpLightReporting is a .Net reporting system where developers design a report using excel like software and insert supported template markers for dynamic content and method calls.
 This dynamic content is defined in a custom backing class (ReportData class) where custom properties behave as the source for this dynamic content and custom methods could be used to change the data like NextRecord() etc. resulting in a very easy, simple and flexible reporting system.</Description>

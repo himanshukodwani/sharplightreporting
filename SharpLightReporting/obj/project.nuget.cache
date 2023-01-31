@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Z6tdi00sZc/a7SxOaDsSMmpfMG2KKASIN39GQoyr/M8nJ0FuNoOwQ4FlTCByyxEawRlyX6/FO1mkylx92iNrEQ==",
+  "dgSpecHash": "Z28cpKtwVOJxCIb9MNVV8LqgpWqDPXQGgzgeeO/GOCfRiRzZNzcGqCktygJRO6/a+Dp+vKl5BpZLjtDMsH9Ong==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj",
+  "projectFilePath": "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\SharpLightReporting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\documentformat.openxml\\2.18.0\\documentformat.openxml.2.18.0.nupkg.sha512",
     "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",

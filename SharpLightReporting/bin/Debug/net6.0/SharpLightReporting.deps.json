@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "SharpLightReporting/1.0.0": {
+      "SharpLightReporting/1.0.80": {
         "dependencies": {
           "SpreadsheetLight.Cross.Platform": "3.5.1"
         },
@@ -89,7 +89,7 @@
     }
   },
   "libraries": {
-    "SharpLightReporting/1.0.0": {
+    "SharpLightReporting/1.0.80": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

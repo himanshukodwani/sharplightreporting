@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj": {}
+    "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\SharpLightReporting.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj": {
+    "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\SharpLightReporting.csproj": {
       "version": "1.0.80",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj",
+        "projectUniqueName": "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\SharpLightReporting.csproj",
         "projectName": "SharpLightReporting",
-        "projectPath": "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\SharpLightReporting.csproj",
+        "projectPath": "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\SharpLightReporting.csproj",
         "packagesPath": "C:\\Users\\Himanshu Kodwani\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\SharpLightReporting.CrossPlatform\\SharpLightReporting\\obj\\",
+        "outputPath": "C:\\Projects\\SharpLightReporting\\sharplightreporting\\SharpLightReporting\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
